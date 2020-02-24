@@ -23,10 +23,10 @@ def bubble_Sort(input_data_list: List):
     [data.append(x) for x in input_data_list]
     size = len(data)
 
-    for j in prange(size):
+    for j in range(size):
         swapped = False
 
-        for i in prange(size - j - 1):
+        for i in range(size - j - 1):
             if data[i] > data[i + 1]:
                 data[i], data[i + 1] = data[i + 1], data[i]
                 swapped = True
