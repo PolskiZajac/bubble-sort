@@ -1,8 +1,7 @@
 from random import randint
 import numpy as np
-from numba import cuda, njit, prange
+from numba import cuda, njit
 from numba.typed import List
-import ctypes
 
 
 def generator(minV, maxV, amount, numpy=True):
