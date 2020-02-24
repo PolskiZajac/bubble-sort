@@ -1,13 +1,13 @@
 from random import randint
 import numpy as np
-from numba import cuda, jit, njit
+from numba import cuda, njit, prange
 from numba.typed import List
+import ctypes
 
 
 def generator(minV, maxV, amount, numpy=True):
-    output = []
-    for iterate in range(0, amount, 1):
-        output.append(randint(minV, maxV))
+    output = List()
+    [output.append(randint(minV, maxV)) for iterate in range(0, amount, 1)]
     if numpy is True:
         np_output = np.array(output)
         return np_output
@@ -15,19 +15,19 @@ def generator(minV, maxV, amount, numpy=True):
         return output
 
 
-@jit
-def bubble_Sort(input_data_list: list):
-    number = swaps = i = j = t = int(0)
+@njit
+def bubble_Sort(input_data_list: List):
+    number = swaps = i = j = t = 0
     swapped = False
 
     data = List()
-    data = input_data_list.copy()
+    [data.append(x) for x in input_data_list]
     size = len(data)
 
-    for j in range(size):
+    for j in prange(size):
         swapped = False
 
-        for i in range(0, size - j - 1):
+        for i in prange(size - j - 1):
             if data[i] > data[i + 1]:
                 data[i], data[i + 1] = data[i + 1], data[i]
                 swapped = True
@@ -35,6 +35,3 @@ def bubble_Sort(input_data_list: list):
             break
 
     return data
-
-
-assert not bubble_Sort.nopython_signatures
