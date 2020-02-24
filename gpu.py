@@ -1,7 +1,7 @@
 from random import randint
-from timeit import default_timer as timer
 import numpy as np
-from numba import cuda, jit
+from numba import cuda, jit, njit
+from numba.typed import List
 
 
 def generator(minV, maxV, amount, numpy=True):
@@ -15,12 +15,13 @@ def generator(minV, maxV, amount, numpy=True):
         return output
 
 
-@jit(nopython=True)
-def bubble_Sort(input_data):
-    number = swaps = i = j = t = 0
+@jit
+def bubble_Sort(input_data_list: list):
+    number = swaps = i = j = t = int(0)
     swapped = False
 
-    data = input_data.copy()
+    data = List()
+    data = input_data_list.copy()
     size = len(data)
 
     for j in range(size):
@@ -36,9 +37,4 @@ def bubble_Sort(input_data):
     return data
 
 
-print("Generating")
-new_data = generator(-1000, 1000, 1000, True)
-start = timer()
-print("Sorting")
-new_output = bubble_Sort(new_data)
-print("Time:", timer()-start)
+assert not bubble_Sort.nopython_signatures

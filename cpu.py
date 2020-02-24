@@ -1,5 +1,4 @@
 from random import randint
-from timeit import default_timer as timer
 import numpy as np
 
 
@@ -32,11 +31,3 @@ def bubble_Sort(input_data):
             break
 
     return data
-
-
-print("Generating")
-new_data = generator(-1000, 1000, 1000, True)
-start = timer()
-print("Sorting")
-new_output = bubble_Sort(new_data)
-print("Time:", timer()-start)
