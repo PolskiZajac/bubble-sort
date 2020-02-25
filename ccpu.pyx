@@ -3,18 +3,18 @@ import numpy as np
 cimport numpy as np
 
 
-cpdef np.ndarray[np.int, ndim=1] generator(int minV, int maxV, int amount):
-    cdef np.ndarray[np.int, ndim=1] output = np.zeros[np.int, ndim=1]
+cpdef np.ndarray[long, ndim=1] generator(long minV, long maxV, long amount):
+    cdef np.ndarray[long, ndim=1] output = np.zeros(shape=(amount,), dtype=long)
     for iteration in range(amount):
-        output.append(randint(minV, maxV))
+        output[iteration] = (randint(minV, maxV))
     return output
 
-cpdef np.ndarray[np.int, ndim=1] bubble_Sort(list input_data):
-    cdef int number, swaps, i, j, t = 0
+cpdef np.ndarray[long, ndim=1] bubble_Sort(np.ndarray input_data):
+    cdef unsigned int swaps, i, j = 0
     cdef bint swapped = False
 
-    cdef np.ndarray[np.int, ndim=1] data = input_data.copy()
-    cdef short size = len(data)
+    cdef np.ndarray[long, ndim=1] data = input_data.copy()
+    cdef unsigned short size = len(data)
 
     for j in range(size):
         swapped = False
