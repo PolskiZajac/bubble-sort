@@ -4,6 +4,6 @@ import numpy
 
 
 setup(
-    ext_modules=cythonize("ccpu.pyx"),
+    ext_modules=cythonize("sortcython.pyx"),
     include_dirs=[numpy.get_include()]
 )

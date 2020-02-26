@@ -1,98 +1,99 @@
 from timeit import default_timer as timer
-import gpu
-import ccpu
+import sortnumba
+import sortcython
 import testutil
 
 
+testutil.clear()
+
 # GENERATING
-print("Generating data set 1000,  NumPy: False")
+print("Generating\t1000\tNumba")
 start = timer()
-data_small = ccpu.generator(-1000, 1000, 1000)
-time_gen_small = timer() - start
+data_numba_small = sortnumba.generator(-1000, 1000, 1000)
+time_gen_numba_small = timer() - start
 
-print("Generating data set 10000, NumPy: False")
+print("Generating\t10000\tNumba")
 start = timer()
-data_big = ccpu.generator(-10000, 10000, 10000)
-time_gen_big = timer() - start
+data_numba_big = sortnumba.generator(-10000, 10000, 10000)
+time_gen_numba_big = timer() - start
 
-print("Generating data set 1000,  NumPy: True")
+print("Generating\t10000000\tNumba")
 start = timer()
-data_np_small = gpu.generator(-1000, 1000, 1000, True)
-time_gen_np_small = timer() - start
+data_numba_large = sortnumba.generator(-10000000, 10000000, 10000000)
+time_gen_numba_large = timer() - start
 
-print("Generating data set 10000, NumPy: True")
+
+print("Generating\t1000\tCython")
 start = timer()
-data_np_big = gpu.generator(-10000, 10000, 10000, True)
-time_gen_np_big = timer() - start
+data_cython_small = sortcython.generator(-1000, 1000, 1000)
+time_gen_cython_small = timer() - start
+
+print("Generating\t10000\tCython")
+start = timer()
+data_cython_big = sortcython.generator(-10000, 10000, 10000)
+time_gen_cython_big = timer() - start
+
+print("Generating\t10000000\tCython")
+start = timer()
+data_cython_large = sortcython.generator(-10000000, 10000000, 10000000)
+time_gen_cython_large = timer() - start
 
 
-# # SORTING GPU
-# print("Sorting with GPU 1000,  NumPY: True")
-# start = timer()
-# new_output = gpu.bubble_Sort(data_np_small)
-# gpu_time_sort_np_small = timer() - start
+# SORTING GPU
+print("Sorting 1000 with\tNumba")
+start = timer()
+new_output = sortnumba.bubble_Sort(data_numba_small)
+numba_time_sort_small = timer() - start
 
-# print("Sorting with GPU 10000, NumPY: True")
-# start = timer()
-# new_output = gpu.bubble_Sort(data_np_big)
-# gpu_time_sort_np_big = timer() - start
-
-# print("Sorting with GPU 1000,  NumPY: False")
-# start = timer()
-# new_output = gpu.bubble_Sort(data_small)
-# gpu_time_sort_small = timer() - start
-
-# print("Sorting with GPU 10000, NumPY: False")
-# start = timer()
-# new_output = gpu.bubble_Sort(data_big)
-# gpu_time_sort_big = timer() - start
+print("Sorting 10000 with\tNumba")
+start = timer()
+new_output = sortnumba.bubble_Sort(data_numba_big)
+numba_time_sort_big = timer() - start
 
 
 # SORTING CCPU
-print("Sorting with CCPU 1000,  NumPY: False")
+print("Sorting 1000 with\tCython")
 start = timer()
-new_output = ccpu.bubble_Sort(data_small)
-ccpu_time_sort_small = timer() - start
+new_output = sortcython.bubble_Sort(data_cython_small)
+cython_time_sort_small = timer() - start
 
-print("Sorting with CCPU 10000, NumPY: False")
+print("Sorting 10000 with\tCython")
 start = timer()
-new_output = ccpu.bubble_Sort(data_big)
-ccpu_time_sort_big = timer() - start
+new_output = sortcython.bubble_Sort(data_cython_big)
+cython_time_sort_big = timer() - start
 
-print("Sorting with CCPU 1000,  NumPY: True")
+print("Sorting 10000000 with\tCython")
 start = timer()
-new_output = ccpu.bubble_Sort(data_np_small)
-ccpu_time_sort_np_small = timer() - start
+new_output = sortcython.bubble_Sort(data_cython_large)
+cython_time_sort_large = timer() - start
 
-# print("Sorting with CCPU 10000, NumPY: True")
-# start = timer()
-# new_output = ccpu.bubble_Sort(data_np_big)
-# ccpu_time_sort_np_big = timer() - start
 
 # SUMMARY GENERATING
 testutil.clear()
 
 print("Generating times:\n")
 
-print("Small data set, Numpy: False\t{}".format(time_gen_small))
-print("Big data set,   Numpy: False\t{}".format(time_gen_big))
-# print("Small data set, Numpy: True\t{}".format(time_gen_np_small))
-# print("Big data set,   Numpy: True\t{}".format(time_gen_np_big))
-# print("\n\n")
-
-
-# # SUMMARY GPU
-# print("Sorting with GPU:\n")
-
-# print("Small data set, Numpy: False\t{}".format(gpu_time_sort_small))
-# print("Big data set,   Numpy: False\t{}".format(gpu_time_sort_big))
-# print("Small data set, Numpy: True\t{}".format(gpu_time_sort_np_small))
-# print("Big data set,   Numpy: True\t{}".format(gpu_time_sort_np_big))
+print("Small data set,\tNumba\t{}".format(time_gen_numba_small))
+print("Big data set,\tNumba\t{}".format(time_gen_numba_big))
+print("Large data set,\tNumba\t{}".format(time_gen_numba_large))
+print("\n")
+print("Small data set,\tCython\t{}".format(time_gen_cython_small))
+print("Big data set,\tCython\t{}".format(time_gen_cython_big))
+print("Large data set,\tCython\t{}".format(time_gen_cython_large))
 print("\n\n")
 
 
-# SUMMARY CCPU
-print("Sorting with CCPU:\n")
+# SUMMARY Numba
+print("Sorting with Numba:\n")
 
-print("Small data set, Numpy: False\t{}".format(ccpu_time_sort_small))
-print("Big data set,   Numpy: False\t{}".format(ccpu_time_sort_big))
+print("Small data set\t{}".format(numba_time_sort_small))
+print("Big data set  \t{}".format(numba_time_sort_big))
+print("\n\n")
+
+
+# SUMMARY Cython
+print("Sorting with Cython:\n")
+
+print("Small data set\t{}".format(cython_time_sort_small))
+print("Big data set  \t{}".format(cython_time_sort_big))
+print("Large data set\t{}".format(cython_time_sort_large))
